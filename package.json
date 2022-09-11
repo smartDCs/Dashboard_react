@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend sistema de seguridad",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon index.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smartDCs/Dashboard_react.git"
+  },
+  "author": "David Chicaisa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smartDCs/Dashboard_react/issues"
+  },
+  "homepage": "https://github.com/smartDCs/Dashboard_react#readme",
+  "dependencies": {
+    "ewelink-api": "^3.1.1",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
+  }
+}
