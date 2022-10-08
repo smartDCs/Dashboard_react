@@ -1,0 +1,77 @@
+###
+POST http://localhost:9000/api/usersDash HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"David",
+    "email":"david@domotizarq.com",
+    "role":"developer",
+    "password":"dev1234"
+}
+
+###
+POST http://localhost:9000/api/sonoffData HTTP/1.1
+Content-Type: application/json
+
+{
+    "deviceId":"100042b09d",
+    "name":"sonoff pow",
+    "voltaje":"113.00",
+    "status":"1"
+}
+
+###
+POST http://localhost:9000/api/alarmsData HTTP/1.1
+Content-Type: application/json
+
+{
+    "type":"Movement",
+    "zone":"zona 2",
+    "status":"1",
+    "createdAt":"08/10/2022"
+}
+
+###
+get http://localhost:9000/api/alarmsData HTTP/1.1
+
+###
+get http://localhost:9000/api/sonoffData HTTP/1.1
+###
+get http://localhost:9000/api/usersDash HTTP/1.1
+
+
+
+###
+get http://localhost:9000/api/alarmsData/63418845d7a9e9f4374333c6 HTTP/1.1
+
+###
+get http://localhost:9000/api/sonoffData/6340abddb2ed2c9bb4ee215c HTTP/1.1
+###
+get http://localhost:9000/api/usersDash/633db91c508f22ecb48733f3 HTTP/1.1
+
+
+###
+Put http://localhost:9000/api/usersDash/633db91c508f22ecb48733f3 HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"David",
+    "email":"david@domotizarq.com",
+    "role":"admin",
+    "password":"dev1234"
+}
+
+
+###
+delete http://localhost:9000/api/usersDash/633db91c508f22ecb48733f3 HTTP/1.1
+
+
+###
+Put http://localhost:9000/api/alarmsData/63418845d7a9e9f4374333c6 HTTP/1.1
+Content-Type: application/json
+
+{
+   
+    "status":"0",
+    "updatedAt":"08/10/2022"
+}
