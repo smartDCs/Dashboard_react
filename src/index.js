@@ -21,7 +21,7 @@ app.use('/api', alarmsRoutes);
 
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://dashboardjt.herokuapp.com/');
+  res.header('Access-Control-Allow-Origin', ['https://dashboardjt.herokuapp.com/','localhost:9000']);
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
@@ -32,7 +32,9 @@ app.use(function(req, res, next) {
 app.get('/', (req, res) => {
   res.send("Panel de alarmas");
 });
-
+app.get('/asonoffData', (req, res) => {
+  res.send("valores de sonoff");
+});
 // db connection
 mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to mongodb atlas"))
   .catch((error) => console.error(error));

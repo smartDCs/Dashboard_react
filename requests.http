@@ -37,6 +37,8 @@ get http://localhost:9000/api/alarmsData HTTP/1.1
 ###
 get http://localhost:9000/api/sonoffData HTTP/1.1
 ###
+get http://localhost:9000/api/asonoffData HTTP/1.1
+###
 get http://localhost:9000/api/usersDash HTTP/1.1
 
 

@@ -1,7 +1,9 @@
 const express=require("express");
 const router=express.Router();
 const sonoffSchema=require("../models/sonoffPow");
+
 const cors = require("cors");
+
 router.use(cors());
 //save sonoff data
 router.post("/sonoffData",(req,res)=>{
