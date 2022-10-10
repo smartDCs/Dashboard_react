@@ -21,7 +21,7 @@ app.use(cors()); //habilitar otras aplicaciones para realizar solicitudes
 
 
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'https://backendjc.herokuapp.com/');
+  res.header('Access-Control-Allow-Origin', 'https://dashboardjt.herokuapp.com/');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
