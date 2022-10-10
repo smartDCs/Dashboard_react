@@ -19,7 +19,14 @@ app.use('/api', alarmsRoutes);
 
 app.use(cors()); //habilitar otras aplicaciones para realizar solicitudes 
 
-
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:'+port);
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
 //routes
 app.get('/', (req, res) => {
   res.send("Panel de alarmas");
