@@ -26,7 +26,10 @@ router.get("/sonoffData",(req,res)=>{
         message:error
     }));
 });
-
+//read sonoff data base
+router.get("/asonoffData",(req,res)=>{
+   res.send('hola');
+});
 //read a sonoff data
 router.get("/sonoffData/:id",(req,res)=>{
     const {id}=req.params;
