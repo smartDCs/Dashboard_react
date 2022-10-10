@@ -35,7 +35,6 @@ const password = process.env.password;
 const region = process.env.region;
 async function dataEwelink() {
 
-
   // lee el estado del sonoff
   async function leerEstado() {
     const connection = new ewelink({
@@ -78,33 +77,7 @@ async function dataEwelink() {
           });
 
 
-          //  
-          // const name = 'sonoff Pow';
-          //var status = false;
-
-
-
-          //const estatus = await connection.getDevicePowerState(deviceid);
-          //const estado = estatus.state;
-          //if (estado == 'on') {
-          //  status = true;
-          //} else {
-          // status = false;
-          // }
-          // console.log("estado del switch " + status);
-          //leer el voltaje del sonoff pow
-          // const devices = await connection.getDevice(deviceid);
-          // console.log(devices);
-          /*  
-             if (typeof devices == 'Object') {
-               const voltaje = (devices['params']['voltage']); 
-               console.log("voltaje del sistema " + voltaje);
-   
-               const sonoffData = await sonoffPow.create({ deviceid, name, voltaje, status });
-               res.json(sonoffData);
-             }
-   */
-
+          
 
         }
         catch (error) {
