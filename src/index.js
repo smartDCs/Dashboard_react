@@ -70,7 +70,7 @@ async function dataEwelink() {
             status: status,
 
           };
-          axios.post("http://localhost:9000/api/sonoffData", sonoff).then(function (response) {
+          axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
             // console.log(response.data)
           }).catch(function (error) {
             console.log(error)
