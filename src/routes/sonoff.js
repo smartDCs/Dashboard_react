@@ -28,56 +28,7 @@ router.get("/sonoffData",(req,res)=>{
 });
 //read sonoff data from fornt end
 
-router.get("/asonoffData",(req,res)=>async function dataEwelink(){
-  // read ewelink data
-const email = process.env.email;
-const password = process.env.password;
-const region = process.env.region;
-
-
-
-  // lee el estado del sonoff
-    const connection = new ewelink({
-      email,
-      password,
-      region,
-    });
-   
-    
-
-        try {
-          const deviceid = '100042b09d';
-          const pow = await connection.getDevice(deviceid);
-          //console.log(pow);
-          const voltaje = (pow['params']['voltage']);
-          const current = (pow['params']['current']);
-          var status = (pow['params']['switch']);
-          console.log("voltaje del sistema " + voltaje);
-          console.log("corriente del sistema " + current);
-          console.log("estado el interruptor " + status);
-          if (status == 'on') {
-            status = 1;
-          } else {
-            status = 0;
-          }
-          const sonoff = {
-            deviceId: '100042b09d',
-            name: "sonoff pow",
-            voltaje: voltaje,
-            current: current,
-            status: status,
-
-          };
-         res.json(sonoff);
-
-
-          
-
-        }
-        catch (error) {
-          console.log(error)
-        }
-
+router.get("/asonoffData",(req,res)=>{
 res.send("hola");
     
  
