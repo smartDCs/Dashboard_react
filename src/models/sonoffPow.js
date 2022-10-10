@@ -13,6 +13,10 @@ const sonoffSchema=mongoose.Schema({
       type:Number,
       required:true  
     },
+    current:{
+      type:Number,
+      required:true  
+    },
     status:{
         type:Boolean,
         required:true

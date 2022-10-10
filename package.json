@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/smartDCs/Dashboard_react#readme",
   "dependencies": {
+    "axios": "^1.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "ewelink-api": "^3.1.1",
