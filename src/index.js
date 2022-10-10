@@ -17,7 +17,7 @@ app.use('/api', userRoutes);
 app.use('/api', sonoffRoutes);
 app.use('/api', alarmsRoutes);
 
-app.use(cors()); //habilitar otras aplicaciones para realizar solicitudes 
+//app.use(cors()); //habilitar otras aplicaciones para realizar solicitudes 
 
 
 app.use(function(req, res, next) {
