@@ -1,41 +1,48 @@
-const express = require("express");
+var express = require("express");
 const ewelink = require("ewelink-api");
 const mongoose = require("mongoose");
 const axios = require('axios');
-
+var http = require("http");
+const { Server } = require("socket.io");
 const cors = require("cors");
 require("dotenv").config();
+
 const userRoutes = require("./routes/user");
 const sonoffRoutes = require("./routes/sonoff");
 const alarmsRoutes = require("./routes/alarmas");
-
-const app = express();
 const port = process.env.PORT || 9000;
+
+var app = express();
+app.set('port', port);
+
+var server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+});
+
+//variables 
+var voltaje =0;
+
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', sonoffRoutes);
 app.use('/api', alarmsRoutes);
 
-//app.use(cors()); //habilitar otras aplicaciones para realizar solicitudes 
-
-
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', ['https://dashboardjt.herokuapp.com/','localhost:9000']);
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
-});
 //routes
 app.get('/', (req, res) => {
-  res.send("Panel de alarmas");
+  //res.sendFile(__dirname + '/index.html');
+  res.send("backend");
 });
+
 app.get('/asonoffData', (req, res) => {
   res.send("valores de sonoff");
 });
 // db connection
+
 mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to mongodb atlas"))
   .catch((error) => console.error(error));
 
@@ -43,6 +50,7 @@ mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to m
 const email = process.env.email;
 const password = process.env.password;
 const region = process.env.region;
+
 async function dataEwelink() {
 
   // lee el estado del sonoff
@@ -61,7 +69,10 @@ async function dataEwelink() {
           const deviceid = '100042b09d';
           const pow = await connection.getDevice(deviceid);
           //console.log(pow);
-          const voltaje = (pow['params']['voltage']);
+
+//lee los datos de la api ewelink
+
+           voltaje = (pow['params']['voltage']);
           const current = (pow['params']['current']);
           var status = (pow['params']['switch']);
           console.log("voltaje del sistema " + voltaje);
@@ -80,14 +91,15 @@ async function dataEwelink() {
             status: status,
 
           };
+          //guarda los datos en la base de datos
           axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
             // console.log(response.data)
           }).catch(function (error) {
-            console.log(error)
+            console.log(error);
           });
 
 
-          
+
 
         }
         catch (error) {
@@ -106,7 +118,32 @@ async function dataEwelink() {
 }
 
 
+io.on("connection", (socket) => {
+  console.log('user conected', socket.id);
+ 
+  socket.on('chek_voltaje',()=>{
 
-app.listen(port, () =>
-  dataEwelink());
+    socket.emit('sonoff_voltaje', voltaje);
+  });
+  socket.on('conectado', (arg) => {
+    console.log(arg);
+  })
+  // socket.on('disconnect', function () {
+  //   console.log('user disconnected');
+  // });
+
+
+
+});
+
+
+server.listen(port);
+ dataEwelink();
+console.log("server on port ", port);
+
+
+
+
+
+
 //console.log("server listening on port ",port));
