@@ -25,7 +25,7 @@ const io = new Server(server, {
 
 //variables 
 var voltaje =0;
-
+var  current=0;
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
@@ -73,7 +73,7 @@ async function dataEwelink() {
 //lee los datos de la api ewelink
 
            voltaje = (pow['params']['voltage']);
-          const current = (pow['params']['current']);
+           current = (pow['params']['current']);
           var status = (pow['params']['switch']);
           console.log("voltaje del sistema " + voltaje);
           console.log("corriente del sistema " + current);
@@ -121,9 +121,10 @@ async function dataEwelink() {
 io.on("connection", (socket) => {
   console.log('user conected', socket.id);
  
-  socket.on('chek_voltaje',()=>{
+  socket.on('chek_pow',()=>{
 
     socket.emit('sonoff_voltaje', voltaje);
+    socket.emit('sonoff_corriente', current);
   });
   socket.on('conectado', (arg) => {
     console.log(arg);
