@@ -1,10 +1,7 @@
 const mongoose=require("mongoose");
 
 const sonoffSchema=mongoose.Schema({
-    deviceId:{
-        type:String,
-        required:true
-    },
+ 
     name:{
         type:String,
         required:true

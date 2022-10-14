@@ -38,8 +38,8 @@ app.get('/', (req, res) => {
   res.send("backend");
 });
 
-app.get('/asonoffData', (req, res) => {
-  res.send("valores de sonoff");
+app.get('/sonoffData', (req, res) => {
+  //res.send("valores de sonoff");
 });
 // db connection
 
@@ -50,24 +50,29 @@ mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to m
 const email = process.env.email;
 const password = process.env.password;
 const region = process.env.region;
-
+const idPow=process.env.idPow;
 async function dataEwelink() {
 
   // lee el estado del sonoff
   async function leerEstado() {
+
+// crea la instancia ewelink
     const connection = new ewelink({
       email,
       password,
       region,
     });
+
+
+
     while (true) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       (async () => {
 
 
         try {
-          const deviceid = '100042b09d';
-          const pow = await connection.getDevice(deviceid);
+        
+          const pow = await connection.getDevice(idPow);
           //console.log(pow);
 
 //lee los datos de la api ewelink
@@ -84,7 +89,7 @@ async function dataEwelink() {
             status = 0;
           }
           const sonoff = {
-            deviceId: '100042b09d',
+            
             name: "sonoff pow",
             voltaje: voltaje,
             current: current,
@@ -129,9 +134,9 @@ io.on("connection", (socket) => {
   socket.on('conectado', (arg) => {
     console.log(arg);
   })
-  // socket.on('disconnect', function () {
-  //   console.log('user disconnected');
-  // });
+   socket.on('disconnect', function () {
+    console.log('user disconnected');
+   });
 
 
 
