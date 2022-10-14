@@ -24,8 +24,11 @@ const io = new Server(server, {
 });
 
 //variables 
-var voltaje =0;
-var  current=0;
+var voltaje = 0;
+var current = 0;
+var statusPow;
+var statusSirena;
+var statusPuerta;
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
@@ -50,13 +53,18 @@ mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to m
 const email = process.env.email;
 const password = process.env.password;
 const region = process.env.region;
-const idPow=process.env.idPow;
+const idPow = process.env.idPow;
+const idDual=process.env.idDual;
+
+
+
+
 async function dataEwelink() {
 
   // lee el estado del sonoff
   async function leerEstado() {
 
-// crea la instancia ewelink
+    // crea la instancia ewelink
     const connection = new ewelink({
       email,
       password,
@@ -71,34 +79,54 @@ async function dataEwelink() {
 
 
         try {
-        
+
           const pow = await connection.getDevice(idPow);
-          //console.log(pow);
+        
 
-//lee los datos de la api ewelink
+          //lee los datos de la api ewelink
 
-           voltaje = (pow['params']['voltage']);
-           current = (pow['params']['current']);
-          var status = (pow['params']['switch']);
+          voltaje = (pow['params']['voltage']);
+        current = (pow['params']['current']);
+          statusPow = (pow['params']['switch']);
           console.log("voltaje del sistema " + voltaje);
-          console.log("corriente del sistema " + current);
-          console.log("estado el interruptor " + status);
-          if (status == 'on') {
-            status = 1;
+         console.log("corriente del sistema " + current);
+          console.log("estado el interruptor " + statusPow);
+          if (statusPow == 'on') {
+            statusPow = 1;
           } else {
-            status = 0;
+            statusPow = 0;
           }
           const sonoff = {
-            
+
             name: "sonoff pow",
             voltaje: voltaje,
             current: current,
-            status: status,
+            status: statusPow,
 
           };
+        
+          const dual=await connection.getDevice(idDual);
+          statusSirena=dual['params']['switches'][0]['switch'];
+          statusPuerta=dual['params']['switches'][1]['switch'];
+         
+          console.log("Sirena ",statusSirena);
+          console.log("Puerta ",statusPuerta); 
+
+          if (statusSirena == 'on') {
+            statusSirena = 1;
+          } else {
+            statusSirena = 0;
+          }
+          if (statusPuerta == 'on') {
+            statusPuerta = 1;
+          } else {
+            statusPuerta = 0;
+          }
+
           //guarda los datos en la base de datos
           axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
             // console.log(response.data)
+
           }).catch(function (error) {
             console.log(error);
           });
@@ -125,18 +153,17 @@ async function dataEwelink() {
 
 io.on("connection", (socket) => {
   console.log('user conected', socket.id);
+  setInterval(() => {
+    socket.emit('powData', voltaje, current, statusPow);
+    socket.emit('dualData', statusSirena,statusPuerta);
+  }, 1000);
  
-  socket.on('chek_pow',()=>{
-
-    socket.emit('sonoff_voltaje', voltaje);
-    socket.emit('sonoff_corriente', current);
-  });
   socket.on('conectado', (arg) => {
     console.log(arg);
   })
-   socket.on('disconnect', function () {
+  socket.on('disconnect', function () {
     console.log('user disconnected');
-   });
+  });
 
 
 
@@ -144,7 +171,7 @@ io.on("connection", (socket) => {
 
 
 server.listen(port);
- dataEwelink();
+dataEwelink();
 console.log("server on port ", port);
 
 
