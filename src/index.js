@@ -10,6 +10,7 @@ require("dotenv").config();
 const userRoutes = require("./routes/user");
 const sonoffRoutes = require("./routes/sonoff");
 const alarmsRoutes = require("./routes/alarmas");
+const { isBuffer } = require("util");
 const port = process.env.PORT || 9000;
 
 var app = express();
@@ -54,43 +55,59 @@ const email = process.env.email;
 const password = process.env.password;
 const region = process.env.region;
 const idPow = process.env.idPow;
-const idDual=process.env.idDual;
+const idDual = process.env.idDual;
+const connection = new ewelink({
+  email,
+  password,
+  region,
+});
 
+async function changeState(arg) {
+  
+  if (connection) {
+    const status = await connection.toggleDevice(idDual, arg);
+  }
 
+}
 
 
 async function dataEwelink() {
 
   // lee el estado del sonoff
-  async function leerEstado() {
+ // async function leerEstado() {
 
     // crea la instancia ewelink
-    const connection = new ewelink({
-      email,
-      password,
-      region,
-    });
 
+    
 
+    
+   // while (true) {
+     
 
-    while (true) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      (async () => {
+     // await new Promise(resolve => setTimeout(resolve, 1000));
+     setInterval(()=>{
 
+   
+     (async () => {
+      
+    
+      //  console.log(connection);
 
-        try {
-
-          const pow = await connection.getDevice(idPow);
         
 
+          const pow = await connection.getDevice(idPow);
+
+         // console.log(pow);
           //lee los datos de la api ewelink
 
           voltaje = (pow['params']['voltage']);
-        current = (pow['params']['current']);
+          current = (pow['params']['current']);
           statusPow = (pow['params']['switch']);
           console.log("voltaje del sistema " + voltaje);
-         console.log("corriente del sistema " + current);
+          console.log("corriente del sistema " + current);
           console.log("estado el interruptor " + statusPow);
+
+
           if (statusPow == 'on') {
             statusPow = 1;
           } else {
@@ -104,13 +121,13 @@ async function dataEwelink() {
             status: statusPow,
 
           };
-        
-          const dual=await connection.getDevice(idDual);
-          statusSirena=dual['params']['switches'][0]['switch'];
-          statusPuerta=dual['params']['switches'][1]['switch'];
-         
-          console.log("Sirena ",statusSirena);
-          console.log("Puerta ",statusPuerta); 
+
+          const dual = await connection.getDevice(idDual);
+          statusSirena = dual['params']['switches'][0]['switch'];
+          statusPuerta = dual['params']['switches'][1]['switch'];
+        //  console.log(dual['params']['switches']);
+          console.log("Sirena ", statusSirena);
+          console.log("Puerta ", statusPuerta);
 
           if (statusSirena == 'on') {
             statusSirena = 1;
@@ -134,32 +151,31 @@ async function dataEwelink() {
 
 
 
-        }
-        catch (error) {
-          console.log(error)
-        }
-
-
       })();
       ////////////////////////////////////////
-    }
+    //}
+  },1000);
   }
 
-  leerEstado();
+  //leerEstado();
   // setInterval(leerEstado, 1000);
 
-}
+//}
 
 
 io.on("connection", (socket) => {
   console.log('user conected', socket.id);
   setInterval(() => {
     socket.emit('powData', voltaje, current, statusPow);
-    socket.emit('dualData', statusSirena,statusPuerta);
-  }, 1000);
- 
-  socket.on('conectado', (arg) => {
-    console.log(arg);
+    socket.emit('dualData', statusSirena, statusPuerta);
+  }, 100);
+
+  socket.on('toggleChannel', function (arg) {
+    changeState(arg);
+  
+    // const status = await connection.toggleDevice(idDual, 0);
+
+    //console.log(status);
   })
   socket.on('disconnect', function () {
     console.log('user disconnected');
@@ -170,8 +186,12 @@ io.on("connection", (socket) => {
 });
 
 
-server.listen(port);
-dataEwelink();
+server.listen(port,()=>{
+  
+  
+  dataEwelink();
+});
+
 console.log("server on port ", port);
 
 
