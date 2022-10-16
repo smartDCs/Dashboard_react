@@ -35,7 +35,7 @@ app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', sonoffRoutes);
 app.use('/api', alarmsRoutes);
-app.use(cors());
+//app.use(cors());
 //routes
 app.get('/', (req, res) => {
   //res.sendFile(__dirname + '/index.html');
