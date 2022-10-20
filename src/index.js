@@ -35,7 +35,7 @@ app.use(express.json());
 app.use('/api', userRoutes);
 app.use('/api', sonoffRoutes);
 app.use('/api', alarmsRoutes);
-//app.use(cors());
+app.use(cors());
 //routes
 app.get('/', (req, res) => {
   //res.sendFile(__dirname + '/index.html');
@@ -63,7 +63,7 @@ const connection = new ewelink({
 });
 
 async function changeState(arg) {
-  
+
   if (connection) {
     const status = await connection.toggleDevice(idDual, arg);
   }
@@ -74,91 +74,91 @@ async function changeState(arg) {
 async function dataEwelink() {
 
   // lee el estado del sonoff
- // async function leerEstado() {
+  // async function leerEstado() {
 
-    // crea la instancia ewelink
+  // crea la instancia ewelink
 
-    
 
-    
-   // while (true) {
-     
 
-     // await new Promise(resolve => setTimeout(resolve, 1000));
-     setInterval(()=>{
 
-   
-     (async () => {
-      
-    
+  // while (true) {
+
+
+  // await new Promise(resolve => setTimeout(resolve, 1000));
+  setInterval(() => {
+
+
+    (async () => {
+
+
       //  console.log(connection);
 
-        
-
-          const pow = await connection.getDevice(idPow);
-
-         // console.log(pow);
-          //lee los datos de la api ewelink
-
-          voltaje = (pow['params']['voltage']);
-          current = (pow['params']['current']);
-          statusPow = (pow['params']['switch']);
-          console.log("voltaje del sistema " + voltaje);
-          console.log("corriente del sistema " + current);
-          console.log("estado el interruptor " + statusPow);
 
 
-          if (statusPow == 'on') {
-            statusPow = 1;
-          } else {
-            statusPow = 0;
-          }
-          const sonoff = {
+      const pow = await connection.getDevice(idPow);
 
-            name: "sonoff pow",
-            voltaje: voltaje,
-            current: current,
-            status: statusPow,
+      // console.log(pow);
+      //lee los datos de la api ewelink
 
-          };
-
-          const dual = await connection.getDevice(idDual);
-          statusSirena = dual['params']['switches'][0]['switch'];
-          statusPuerta = dual['params']['switches'][1]['switch'];
-        //  console.log(dual['params']['switches']);
-          console.log("Sirena ", statusSirena);
-          console.log("Puerta ", statusPuerta);
-
-          if (statusSirena == 'on') {
-            statusSirena = 1;
-          } else {
-            statusSirena = 0;
-          }
-          if (statusPuerta == 'on') {
-            statusPuerta = 1;
-          } else {
-            statusPuerta = 0;
-          }
-
-          //guarda los datos en la base de datos
-          axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
-            // console.log(response.data)
-
-          }).catch(function (error) {
-            console.log(error);
-          });
+      voltaje = (pow['params']['voltage']);
+      current = (pow['params']['current']);
+      statusPow = (pow['params']['switch']);
+      console.log("voltaje del sistema " + voltaje);
+      console.log("corriente del sistema " + current);
+      console.log("estado el interruptor " + statusPow);
 
 
+      if (statusPow == 'on') {
+        statusPow = 1;
+      } else {
+        statusPow = 0;
+      }
+      const sonoff = {
+
+        name: "sonoff pow",
+        voltaje: voltaje,
+        current: current,
+        status: statusPow,
+
+      };
+
+      const dual = await connection.getDevice(idDual);
+      statusSirena = dual['params']['switches'][0]['switch'];
+      statusPuerta = dual['params']['switches'][1]['switch'];
+      //  console.log(dual['params']['switches']);
+      console.log("Sirena ", statusSirena);
+      console.log("Puerta ", statusPuerta);
+
+      if (statusSirena == 'on') {
+        statusSirena = 1;
+      } else {
+        statusSirena = 0;
+      }
+      if (statusPuerta == 'on') {
+        statusPuerta = 1;
+      } else {
+        statusPuerta = 0;
+      }
+
+      //guarda los datos en la base de datos
+      axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
+        // console.log(response.data)
+
+      }).catch(function (error) {
+        console.log(error);
+      });
 
 
-      })();
-      ////////////////////////////////////////
+
+
+    })();
+    ////////////////////////////////////////
     //}
-  },1000);
-  }
+  }, 1000);
+}
 
-  //leerEstado();
-  // setInterval(leerEstado, 1000);
+//leerEstado();
+// setInterval(leerEstado, 1000);
 
 //}
 
@@ -172,7 +172,7 @@ io.on("connection", (socket) => {
 
   socket.on('toggleChannel', function (arg) {
     changeState(arg);
-  
+
     // const status = await connection.toggleDevice(idDual, 0);
 
     //console.log(status);
@@ -186,9 +186,9 @@ io.on("connection", (socket) => {
 });
 
 
-server.listen(port,()=>{
-  
-  
+server.listen(port, () => {
+
+
   dataEwelink();
 });
 
