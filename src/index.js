@@ -38,13 +38,11 @@ app.use('/api', alarmsRoutes);
 app.use(cors());
 //routes
 app.get('/', (req, res) => {
-  //res.sendFile(__dirname + '/index.html');
+ 
   res.send("backend");
 });
 
-app.get('/sonoffData', (req, res) => {
-  //res.send("valores de sonoff");
-});
+
 // db connection
 
 mongoose.connect(process.env.MONGODB_URI).then(() => console.log("Connected to mongodb atlas"))
