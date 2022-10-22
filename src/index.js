@@ -55,11 +55,20 @@ const password = process.env.password;
 const region = process.env.region;
 const idPow = process.env.idPow;
 const idDual = process.env.idDual;
-connection = new ewelink({
-  email,
-  password,
-  region,
-});
+
+function conectar() {
+  try {
+
+
+    connection = new ewelink({
+      email,
+      password,
+      region,
+    });
+  } catch (error) {
+    console.error("Error en la comunicacion ewelink ", error);
+  }
+}
 
 async function changeState(arg) {
 
@@ -78,7 +87,7 @@ async function dataEwelink() {
   // crea la instancia ewelink
 
 
-
+conectar();
 
   // while (true) {
 
@@ -107,12 +116,8 @@ async function dataEwelink() {
         console.log("estado el interruptor " + statusPow);
       }
       catch (error) {
-        console.log(error);
-        connection = new ewelink({
-          email,
-          password,
-          region,
-        });
+        console.error("error en la comunicacion ewelink ",error);
+        conectar();
       }
 
       if (statusPow == 'on') {
@@ -138,12 +143,8 @@ async function dataEwelink() {
         console.log("Sirena ", statusSirena);
         console.log("Puerta ", statusPuerta);
       } catch (error) {
-        console.log(error);
-        connection = new ewelink({
-          email,
-          password,
-          region,
-        });
+        console.error("error en la comunicacion ewelink ",error);
+        conectar();
       }
       if (statusSirena == 'on') {
         statusSirena = 1;
