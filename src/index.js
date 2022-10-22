@@ -30,7 +30,7 @@ var current = 0;
 var statusPow;
 var statusSirena;
 var statusPuerta;
-var connection=null;
+var connection = null;
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
@@ -39,7 +39,7 @@ app.use('/api', alarmsRoutes);
 app.use(cors());
 //routes
 app.get('/', (req, res) => {
- 
+
   res.send("backend");
 });
 
@@ -98,22 +98,22 @@ async function dataEwelink() {
 
       // console.log(pow);
       //lee los datos de la api ewelink
-try{
-      voltaje = (pow['params']['voltage']);
-      current = (pow['params']['current']);
-      statusPow = (pow['params']['switch']);
-      console.log("voltaje del sistema " + voltaje);
-      console.log("corriente del sistema " + current);
-      console.log("estado el interruptor " + statusPow);
-}
-catch(error){
-  console.log(error);
-  connection = new ewelink({
-    email,
-    password,
-    region,
-  });
-}
+      try {
+        voltaje = (pow['params']['voltage']);
+        current = (pow['params']['current']);
+        statusPow = (pow['params']['switch']);
+        console.log("voltaje del sistema " + voltaje);
+        console.log("corriente del sistema " + current);
+        console.log("estado el interruptor " + statusPow);
+      }
+      catch (error) {
+        console.log(error);
+        connection = new ewelink({
+          email,
+          password,
+          region,
+        });
+      }
 
       if (statusPow == 'on') {
         statusPow = 1;
@@ -130,12 +130,21 @@ catch(error){
       };
 
       const dual = await connection.getDevice(idDual);
-      statusSirena = dual['params']['switches'][0]['switch'];
-      statusPuerta = dual['params']['switches'][1]['switch'];
-      //  console.log(dual['params']['switches']);
-      console.log("Sirena ", statusSirena);
-      console.log("Puerta ", statusPuerta);
 
+      try {
+        statusSirena = dual['params']['switches'][0]['switch'];
+        statusPuerta = dual['params']['switches'][1]['switch'];
+        //  console.log(dual['params']['switches']);
+        console.log("Sirena ", statusSirena);
+        console.log("Puerta ", statusPuerta);
+      } catch (error) {
+        console.log(error);
+        connection = new ewelink({
+          email,
+          password,
+          region,
+        });
+      }
       if (statusSirena == 'on') {
         statusSirena = 1;
       } else {
@@ -162,10 +171,10 @@ catch(error){
     ////////////////////////////////////////
     //}
   }, 1000);
-//}
+  //}
 
-//leerEstado();
-// setInterval(leerEstado, 1000);
+  //leerEstado();
+  // setInterval(leerEstado, 1000);
 
 }
 
