@@ -30,6 +30,7 @@ var current = 0;
 var statusPow;
 var statusSirena;
 var statusPuerta;
+const connection=null;
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
@@ -54,7 +55,7 @@ const password = process.env.password;
 const region = process.env.region;
 const idPow = process.env.idPow;
 const idDual = process.env.idDual;
-const connection = new ewelink({
+connection = new ewelink({
   email,
   password,
   region,
@@ -97,14 +98,22 @@ async function dataEwelink() {
 
       // console.log(pow);
       //lee los datos de la api ewelink
-
+try{
       voltaje = (pow['params']['voltage']);
       current = (pow['params']['current']);
       statusPow = (pow['params']['switch']);
       console.log("voltaje del sistema " + voltaje);
       console.log("corriente del sistema " + current);
       console.log("estado el interruptor " + statusPow);
-
+}
+catch(error){
+  console.log(error);
+  connection = new ewelink({
+    email,
+    password,
+    region,
+  });
+}
 
       if (statusPow == 'on') {
         statusPow = 1;
