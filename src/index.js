@@ -30,7 +30,7 @@ var current = 0;
 var statusPow;
 var statusSirena;
 var statusPuerta;
-const connection=null;
+var connection=null;
 //middleware
 app.use(express.json());
 app.use('/api', userRoutes);
