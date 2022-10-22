@@ -79,7 +79,7 @@ async function dataEwelink() {
 
 
 
-   while (true) {
+  // while (true) {
 
 
   // await new Promise(resolve => setTimeout(resolve, 1000));
@@ -153,7 +153,7 @@ async function dataEwelink() {
     ////////////////////////////////////////
     //}
   }, 1000);
-}
+//}
 
 //leerEstado();
 // setInterval(leerEstado, 1000);
