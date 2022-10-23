@@ -61,10 +61,10 @@ const idDual = process.env.idDual;
 
 
 async function changeState(arg) {
-
-  if (connection) {
+console.log("cambiando de estado el canal ",arg);
+//  if (connection) {
     const status = await connection.toggleDevice(idDual, arg);
-  }
+ // }
 
 }
 
@@ -237,7 +237,7 @@ io.on("connection", (socket) => {
   socket.on('toggleChannel', function (arg) {
     changeState(arg);
 
-    // const status = await connection.toggleDevice(idDual, 0);
+  //   const status = await connection.toggleDevice(idDual, 0);
 
     //console.log(status);
   })
