@@ -234,12 +234,12 @@ io.on("connection", (socket) => {
     socket.emit('dualData', statusSirena, statusPuerta);
   }, 100);
 
-  socket.on('toggleChannel', function (arg) {
-    changeState(arg);
+  socket.on('toggleChannel', async function (arg) {
+   // changeState(arg);
 
-  //   const status = await connection.toggleDevice(idDual, 0);
+    const status = await connection.toggleDevice(idDual, arg);
 
-    //console.log(status);
+    console.log(status);
   })
   socket.on('disconnect', function () {
     console.log('user disconnected');
