@@ -61,9 +61,10 @@ const idDual = process.env.idDual;
 
 
 async function changeState(arg) {
-console.log("cambiando de estado el canal ",arg);
+//console.log("cambiando de estado el canal ",arg);
 //  if (connection) {
     const status = await connection.toggleDevice(idDual, arg);
+    console.log(status);
  // }
 
 }
@@ -235,11 +236,11 @@ io.on("connection", (socket) => {
   }, 100);
 
   socket.on('toggleChannel', async function (arg) {
-   // changeState(arg);
+   changeState(arg);
    
-    const status = await connection.toggleDevice(idDual, arg);
+   // const status = await connection.toggleDevice(idDual, arg);
 
-    console.log(status);
+    //console.log(status);
   })
   socket.on('disconnect', function () {
     console.log('user disconnected');
