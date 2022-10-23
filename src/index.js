@@ -236,7 +236,11 @@ io.on("connection", (socket) => {
 
   socket.on('toggleChannel', async function (arg) {
    // changeState(arg);
-
+   connection = new ewelink({
+    email,
+    password,
+    region,
+  });
     const status = await connection.toggleDevice(idDual, arg);
 
     console.log(status);
