@@ -31,7 +31,7 @@ var current;
 var statusPow;
 var statusSirena;
 var statusPuerta;
-var connection=null;
+var connection = null;
 var dual = null;
 
 
@@ -61,11 +61,11 @@ const idDual = process.env.idDual;
 
 
 async function changeState(arg) {
-//console.log("cambiando de estado el canal ",arg);
-//  if (connection) {
-    const status = await connection.toggleDevice(idDual, arg);
-    console.log(status);
- // }
+  //console.log("cambiando de estado el canal ",arg);
+  //  if (connection) {
+  const status = await connection.toggleDevice(idDual, arg);
+  console.log(status);
+  // }
 
 }
 
@@ -80,62 +80,63 @@ async function dataEwelink() {
 
       console.log("conectando.... ewelink");
 
-try{
-       connection = new ewelink({
-        email,
-        password,
-        region,
-      });
-    }catch(error){
-      console.log("error en instanciar la conexxion ",error);
-    }
-    /*
       try {
-        const login = await connection.getCredentials();
-
+        connection = new ewelink({
+          email,
+          password,
+          region,
+        });
       } catch (error) {
-        console.log("error en la obtencion de credenciales ", error);
-        return
-      }*/
+        console.log("error en instanciar la conexxion ", error);
+      }
+      /*
+        try {
+          const login = await connection.getCredentials();
+  
+        } catch (error) {
+          console.log("error en la obtencion de credenciales ", error);
+          return
+        }*/
       try {
 
 
-        const pow = await connection.getDevices();
+        const devices = await connection.getDevices();
 
-        console.log(pow.length);
-        for (var i = 0; i < pow.length; i++) {
-          if (pow[i].deviceid == idPow) {
-            console.log('sonoff pow ', pow[i].deviceid);
-            statusPow=pow[i].params.switch;
-            voltaje=pow[i].params.voltage;
-            current=pow[i].params.current;
-            console.log(statusPow);
-            console.log(voltaje);
-            console.log(current);
+        //console.log(pow.length);
+        //  for (var i = 0; i < pow.length; i++) {
+        if (devices.length > 0) {
 
-            if (statusPow == 'on') {
-              statusPow = 1;
-            } else {
-              statusPow = 0;
-            }
-            const sonoff = {
-    
-              name: "sonoff pow",
-              voltaje: voltaje,
-              current: current,
-              status: statusPow,
-    
-            };
-            axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
-              // console.log(response.data)
-    
-            }).catch(function (error) {
-              //  console.log(error);
-            });
+          pow = await connection.getDevice(idPow);
+          statusPow = pow.params.switch;
+          voltaje = pow.params.voltage;
+          current = pow.params.current;
+          console.log(statusPow);
+          console.log(voltaje);
+          console.log(current);
 
+          if (statusPow == 'on') {
+            statusPow = 1;
+          } else {
+            statusPow = 0;
           }
-          //console.log(pow[i].deviceid);
+          const sonoff = {
+
+            name: "sonoff pow",
+            voltaje: voltaje,
+            current: current,
+            status: statusPow,
+
+          };
+          axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
+            // console.log(response.data)
+
+          }).catch(function (error) {
+            //  console.log(error);
+          });
+
         }
+        //console.log(pow[i].deviceid);
+        //}
       } catch (error) {
         console.error("malditacióoooooooooooon ", error);
         return
@@ -236,9 +237,9 @@ io.on("connection", (socket) => {
   }, 100);
 
   socket.on('toggleChannel', async function (arg) {
-   changeState(arg);
-   
-   // const status = await connection.toggleDevice(idDual, arg);
+    changeState(arg);
+
+    // const status = await connection.toggleDevice(idDual, arg);
 
     //console.log(status);
   })
