@@ -185,14 +185,34 @@ io.on("connection", (socket) => {
   }, 100);
 
   socket.on('toggleChannel', async function (arg) {
-    console.log('cambiar de estado el canal ',arg)
-    const date_time=new Date();
+    console.log('cambiar de estado el canal ',arg);
+    
+    if(arg==1)
+    {
+    var ts = Date.now();
+
+    var date_ob = new Date(ts);
+    var date = date_ob.getDate();
+    var month = date_ob.getMonth() + 1;
+    var year = date_ob.getFullYear();
+    var hour=date_ob.getHours();
+    var minutes=date_ob.getMinutes();
+    // prints date & time in YYYY-MM-DD format
+    //console.log(year + "-" + month + "-" + date+" "+hour+":"+minutes);
+
+    const date_time=year + "-" + month + "-" + date+" "+hour+":"+minutes;
     console.log(date_time);
+    if(statusSirena==1){
+      statusSirena=0;
+    }
+    if(statusSirena==0){
+      statusSirena=1;
+    }
     const alarma = {
 
       type:"Pánico",
       zone:"ALL",
-      status:"1",
+      status:statusSirena,
       createdAt:date_time
     };
    
@@ -203,6 +223,7 @@ io.on("connection", (socket) => {
       console.log(error);
       websocket();
     });
+  }
     changeState(arg);
 
     // const status = await connection.toggleDevice(idDual, arg);
