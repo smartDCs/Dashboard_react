@@ -139,15 +139,15 @@ async function websocket() {
           statusSirena = data.params.switches[0].switch;
           statusPuerta = data.params.switches[1].switch;
           // changeState(1);
-          if(statusPuerta=='on'){
-            statusPuerta=1;
-          }else{
-            statusPuerta=0;
+          if (statusPuerta == 'on') {
+            statusPuerta = 1;
+          } else {
+            statusPuerta = 0;
           }
-          if(statusSirena=='on'){
-            statusSirena=1;
-          }else{
-            statusSirena=0;
+          if (statusSirena == 'on') {
+            statusSirena = 1;
+          } else {
+            statusSirena = 0;
           }
           console.log('Puerta ', statusPuerta);
           console.log('Sirena ', statusSirena);
@@ -167,11 +167,11 @@ async function websocket() {
 
 
 async function changeState(arg) {
- 
-  
+
+
   const status = await connection.toggleDevice(idDual, arg);
-  console.log("respuesta del toggle ",status);
-  
+  console.log("respuesta del toggle ", status);
+
 
 }
 
@@ -185,73 +185,35 @@ io.on("connection", (socket) => {
   }, 100);
 
   socket.on('toggleChannel', async function (arg) {
-    console.log('cambiar de estado el canal ',arg);
-    
-    if(arg==1)
-    {
-    var ts = Date.now();
+    console.log('cambiar de estado el canal ', arg);
 
-    var date_ob = new Date(ts);
-    var date = date_ob.getDate();
-    var month = date_ob.getMonth() + 1;
-    var year = date_ob.getFullYear();
-    var hour=date_ob.getHours();
-    var minutes=date_ob.getMinutes();
-    // prints date & time in YYYY-MM-DD format
-    //console.log(year + "-" + month + "-" + date+" "+hour+":"+minutes);
-
-    const date_time=year + "-" + month + "-" + date+" "+hour+":"+minutes;
-    console.log(date_time);
-    if(statusSirena==1){
-      statusSirena=0;
-    }
-    if(statusSirena==0){
-      statusSirena=1;
-    }
-    const alarma = {
-
-      type:"Pánico",
-      zone:"ALL",
-      status:statusSirena,
-      createdAt:date_time
-    };
    
-    axios.post("https://backendjc.herokuapp.com/api/alarmsData", alarma).then(function (response) {
-      // console.log(response.data)
-
-    }).catch(function (error) {
-      console.log(error);
-      websocket();
-    });
-  }
     changeState(arg);
 
-    // const status = await connection.toggleDevice(idDual, arg);
-
-    //console.log(status);
+    
   })
 
-  socket.on('togglePanico', async function (channel,fecha,status) {
-   
+  socket.on('togglePanico', async function (channel, fecha, status) {
+
     console.log(fecha);
-    
+
     const alarma = {
 
-      type:"Pánico",
-      zone:"ALL",
-      status:status,
-      createdAt:fecha
+      type: "Pánico",
+      zone: "ALL",
+      status: status,
+      createdAt: fecha
     };
-   
+
     axios.post("https://backendjc.herokuapp.com/api/alarmsData", alarma).then(function (response) {
-      // console.log(response.data)
+      console.log(response.data)
 
     }).catch(function (error) {
       console.log(error);
       websocket();
     });
     changeState(channel);
-  }  )
+  });
 
 
   socket.on('disconnect', function () {
