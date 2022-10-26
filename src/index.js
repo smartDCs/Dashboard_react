@@ -230,6 +230,30 @@ io.on("connection", (socket) => {
 
     //console.log(status);
   })
+
+  socket.on('togglePanico', async function (channel,fecha,status) {
+   
+    
+    
+    const alarma = {
+
+      type:"Pánico",
+      zone:"ALL",
+      status:status,
+      createdAt:fecha
+    };
+   
+    axios.post("https://backendjc.herokuapp.com/api/alarmsData", alarma).then(function (response) {
+      // console.log(response.data)
+
+    }).catch(function (error) {
+      console.log(error);
+      websocket();
+    });
+    changeState(channel);
+  }  )
+
+
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
