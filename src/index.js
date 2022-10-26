@@ -233,7 +233,7 @@ io.on("connection", (socket) => {
 
   socket.on('togglePanico', async function (channel,fecha,status) {
    
-    
+    console.log(fecha);
     
     const alarma = {
 
