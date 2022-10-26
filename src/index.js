@@ -186,6 +186,23 @@ io.on("connection", (socket) => {
 
   socket.on('toggleChannel', async function (arg) {
     console.log('cambiar de estado el canal ',arg)
+    const date_time=new Date();
+    console.log(date_time);
+    const alarma = {
+
+      type:"Pánico",
+      zone:"ALL",
+      status:"1",
+      createdAt:date_time
+    };
+   
+    axios.post("https://backendjc.herokuapp.com/api/alarmsData", alarma).then(function (response) {
+      // console.log(response.data)
+
+    }).catch(function (error) {
+      console.log(error);
+      websocket();
+    });
     changeState(arg);
 
     // const status = await connection.toggleDevice(idDual, arg);
