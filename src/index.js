@@ -134,24 +134,27 @@ async function websocket() {
 
         case idDual:
           console.log("sonoff dual");
-
-          console.log((data.params.switches).length);
-          statusSirena = data.params.switches[0].switch;
-          statusPuerta = data.params.switches[1].switch;
-          // changeState(1);
-          if (statusPuerta == 'on') {
-            statusPuerta = 1;
-          } else {
-            statusPuerta = 0;
+          try {
+            console.log((data.params.switches).length);
+            statusSirena = data.params.switches[0].switch;
+            statusPuerta = data.params.switches[1].switch;
+            // changeState(1);
+            if (statusPuerta == 'on') {
+              statusPuerta = 1;
+            } else {
+              statusPuerta = 0;
+            }
+            if (statusSirena == 'on') {
+              statusSirena = 1;
+            } else {
+              statusSirena = 0;
+            }
+            console.log('Puerta ', statusPuerta);
+            console.log('Sirena ', statusSirena);
+            break;
+          } catch (error) {
+            console.log(error);
           }
-          if (statusSirena == 'on') {
-            statusSirena = 1;
-          } else {
-            statusSirena = 0;
-          }
-          console.log('Puerta ', statusPuerta);
-          console.log('Sirena ', statusSirena);
-          break;
 
       }
       // console.log(data)
@@ -187,10 +190,10 @@ io.on("connection", (socket) => {
   socket.on('toggleChannel', async function (arg) {
     console.log('cambiar de estado el canal ', arg);
 
-   
+
     changeState(arg);
 
-    
+
   })
 
   socket.on('togglePanico', async function (channel, fecha, status) {
