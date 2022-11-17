@@ -27,7 +27,7 @@ const io = new Server(server, {
 
 //variables 
 
-var voltaje = 120;
+var voltaje = 0;
 var current = 0;
 var statusPow = 0;
 var statusSirena = 0;
@@ -80,6 +80,10 @@ async function websocket() {
 
       console.log("websocket abierto");
 
+
+      const device = await connection.getDevice('100042b09d');
+      console.log(device.params.voltage);
+      voltaje=device.params.voltage;
       switch (data.deviceid) {
         case idPow:
           console.log("sonoff Pow ");
@@ -135,7 +139,7 @@ async function websocket() {
         case idDual:
           console.log("sonoff dual");
           try {
-            console.log((data.params.switches).length);
+           // console.log((data.params.switches).length);
             statusSirena = data.params.switches[0].switch;
             statusPuerta = data.params.switches[1].switch;
             // changeState(1);
@@ -183,9 +187,11 @@ async function changeState(arg) {
 io.on("connection", (socket) => {
   console.log('user conected', socket.id);
   setInterval(() => {
-    socket.emit('powData', voltaje, current, statusPow);
+   
     socket.emit('dualData', statusSirena, statusPuerta);
+    socket.emit('powData', voltaje, current, statusPow);
   }, 100);
+
 
   socket.on('toggleChannel', async function (arg) {
     console.log('cambiar de estado el canal ', arg);
@@ -195,7 +201,7 @@ io.on("connection", (socket) => {
 
 
   })
-
+ 
   socket.on('togglePanico', async function (channel, fecha, status) {
 
     console.log(fecha);
@@ -218,6 +224,7 @@ io.on("connection", (socket) => {
     changeState(channel);
   });
 
+   
 
   socket.on('disconnect', function () {
     console.log('user disconnected');
