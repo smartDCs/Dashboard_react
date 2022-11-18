@@ -32,7 +32,7 @@ var current = 0;
 var statusPow = 0;
 var statusSirena = 0;
 var statusPuerta = 0;
-
+//var socket=null;
 //var dual = null;
 
 
@@ -82,8 +82,12 @@ async function websocket() {
 
 
       const device = await connection.getDevice('100042b09d');
-      console.log(device.params.voltage);
+     try{
       voltaje=device.params.voltage;
+      console.log(voltaje);
+     }catch(error){
+      console.log(error);
+     }
       switch (data.deviceid) {
         case idPow:
           console.log("sonoff Pow ");
@@ -134,6 +138,7 @@ async function websocket() {
           } catch (error) {
             console.log(error);
           }
+         // socket.emit('powData', voltaje, current, statusPow);
           break;
 
         case idDual:
@@ -155,6 +160,8 @@ async function websocket() {
             }
             console.log('Puerta ', statusPuerta);
             console.log('Sirena ', statusSirena);
+           // socket.emit('dualData', statusSirena, statusPuerta);
+          
             break;
           } catch (error) {
             console.log(error);
@@ -189,7 +196,7 @@ io.on("connection", (socket) => {
   setInterval(() => {
    
     socket.emit('dualData', statusSirena, statusPuerta);
-    socket.emit('powData', voltaje, current, statusPow);
+   socket.emit('powData', voltaje, current, statusPow);
   }, 100);
 
 
