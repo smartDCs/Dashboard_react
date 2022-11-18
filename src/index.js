@@ -81,8 +81,9 @@ async function websocket() {
       console.log("websocket abierto");
 
 
-      const device = await connection.getDevice('100042b09d');
+     
      try{
+      const device = await connection.getDevice('100042b09d');
       voltaje=device.params.voltage;
       console.log(voltaje);
      }catch(error){
