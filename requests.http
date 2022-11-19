@@ -1,5 +1,5 @@
 ###
-POST http://localhost:9000/api/usersDash HTTP/1.1
+POST https://backendjc.herokuapp.com/api/usersDash HTTP/1.1
 Content-Type: application/json
 
 {
@@ -21,14 +21,14 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:9000/api/alarmsData HTTP/1.1
+POST https://backendjc.herokuapp.com/api/alarmsData HTTP/1.1
 Content-Type: application/json
 
 {
     "type":"Movement",
     "zone":"zona 2",
     "status":"1",
-    "createdAt":"08/10/2022"
+    "createdAt":"vie, 18/11/2022, 16:35:48"
 }
 
 ###

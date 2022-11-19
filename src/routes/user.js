@@ -23,10 +23,10 @@ router.get("/usersDash",(req,res)=>{
 });
 
 //get a user
-router.get("/usersDash/:id",(req,res)=>{
-  const {id}=req.params;
+router.get("/usersDash/:email",(req,res)=>{
+  const {email}=req.params;
     userSchema
-     .findById(id)
+     .findById(email)
      .then((data)=>res.json(data))
      .catch((error)=>res.json({
          message:error
