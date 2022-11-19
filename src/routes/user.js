@@ -26,10 +26,10 @@ router.get("/usersDash",(req,res)=>{
 });
 
 //get a user
-router.get("/usersDash/:email",(req,res)=>{
+router.get("/usersDash/",(req,res)=>{
   const {email, password}=req.params;
     userSchema
-    .find({
+    .findOne({
         email:email,
         password:password
     })
