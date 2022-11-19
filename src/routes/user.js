@@ -30,8 +30,7 @@ router.get("/usersDash/:email",(req,res)=>{
   const {email, password}=req.params;
     userSchema
     .findOne({
-        email:email,
-        password:password,
+        email:email
     })
      .then((data)=>res.json(data))
      .catch((error)=>res.json({
