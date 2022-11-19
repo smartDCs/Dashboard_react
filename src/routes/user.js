@@ -26,7 +26,7 @@ router.get("/usersDash",(req,res)=>{
 router.get("/usersDash/:email",(req,res)=>{
   const {email}=req.params;
     userSchema
-     .findById(email)
+    .findOne({email:email})
      .then((data)=>res.json(data))
      .catch((error)=>res.json({
          message:error
