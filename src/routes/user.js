@@ -1,6 +1,9 @@
 const express=require("express");
 const router=express.Router();
 const userSchema=require("../models/user");
+const cors = require("cors");
+require("dotenv").config();
+router.use(cors());
 //create user
 router.post("/usersDash",(req,res)=>{
     const user=userSchema(req.body);
@@ -24,9 +27,12 @@ router.get("/usersDash",(req,res)=>{
 
 //get a user
 router.get("/usersDash/:email",(req,res)=>{
-  const {email}=req.params;
+  const {email, password}=req.params;
     userSchema
-    .findOne({email:email})
+    .findOne({
+        email:email,
+        password:password,
+    })
      .then((data)=>res.json(data))
      .catch((error)=>res.json({
          message:error
