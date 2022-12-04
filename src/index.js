@@ -129,7 +129,7 @@ async function websocket() {
             console.log('voltaje ', voltaje);
             console.log('corriente ', current);
             console.log('switch ', statusPow);
-            axios.post("https://backendjc.herokuapp.com/api/sonoffData", sonoff).then(function (response) {
+            axios.post("https://backendjc.onrender.com/api/sonoffData", sonoff).then(function (response) {
               // console.log(response.data)
 
             }).catch(function (error) {
@@ -222,7 +222,7 @@ io.on("connection", (socket) => {
       createdAt: fecha
     };
 
-    axios.post("https://backendjc.herokuapp.com/api/alarmsData", alarma).then(function (response) {
+    axios.post("https://backendjc.onrender.com/api/alarmsData", alarma).then(function (response) {
       console.log(response.data)
 
     }).catch(function (error) {
