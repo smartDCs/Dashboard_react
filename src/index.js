@@ -145,10 +145,10 @@ async function websocket() {
         case idDual:
           console.log("sonoff dual");
           try {
-           // console.log((data.params.switches).length);
+
             statusSirena = data.params.switches[0].switch;
             statusPuerta = data.params.switches[1].switch;
-            // changeState(1);
+       
             if (statusPuerta == 'on') {
               statusPuerta = 1;
             } else {
@@ -169,7 +169,7 @@ async function websocket() {
           }
 
       }
-      // console.log(data)
+ 
     });
   } catch (error) {
 
@@ -246,7 +246,7 @@ io.on("connection", (socket) => {
 server.listen(port, () => {
 
   websocket();
-  //dataEwelink();
+
 });
 
 console.log("server on port ", port);
