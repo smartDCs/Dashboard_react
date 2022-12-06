@@ -32,8 +32,6 @@ var current = 0;
 var statusPow = 0;
 var statusSirena = 0;
 var statusPuerta = 0;
-//var socket=null;
-//var dual = null;
 
 
 app.use(express.json());
@@ -73,8 +71,7 @@ async function websocket() {
     console.log(error);
     websocket();
   }
-  // get device power status
-  //setInterval(async()=>{
+
   try {
     const socket_ewelink = await connection.openWebSocket(async data => {
 
