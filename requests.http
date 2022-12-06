@@ -39,18 +39,23 @@ get http://localhost:9000/api/sonoffData HTTP/1.1
 ###
 get http://localhost:9000/api/asonoffData HTTP/1.1
 ###
-get https://backendjc.herokuapp.com/api/loginUser HTTP/1.1
+get http://localhost:9000/api/loginUser?email=david@domotizarq.com&password=dev1234 HTTP/1.1
 
 body: application/json
 
 {
     "email":"david@domotizarq.com",
-    "password":"dev1234"
+   
 }
 
 ###
-get http://localhost:9000/api/alarmsData/63418845d7a9e9f4374333c6 HTTP/1.1
+get http://localhost:9000/api/alarmsData/ HTTP/1.1
+body: application/json
 
+{
+    "_id":"6377f79234b9a21e91fe4b7a",
+   
+}
 ###
 get http://localhost:9000/api/sonoffData/6340abddb2ed2c9bb4ee215c HTTP/1.1
 ###

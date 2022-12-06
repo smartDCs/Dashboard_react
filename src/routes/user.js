@@ -26,22 +26,17 @@ router.get("/usersDash",(req,res)=>{
 });
 
 //get a user
-router.get("/loginUser",function(req,res){
-  const {email, password}=req.params;
-  console.log(email);
-  console.log(password);
+router.get("/loginUser/",(req,res)=>{
+  const email=req.query.email;
+  const password=req.query.password;
+ 
+  //console.log(password);
     userSchema
     .findOne({
-        email:"david@domotizarq.com",
-        password:"dev1234"
-    }, function(err,result){
-        if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }  
-    });
-    /* .then((data)=>{
+        email:email,
+       password:password
+    })
+     .then((data)=>{
         res.json(data);
         
     }
@@ -49,8 +44,10 @@ router.get("/loginUser",function(req,res){
      .catch((error)=>res.json({
          message:error
      }));
-     */
+    
  });
+
+ 
  
 //update a user
 router.put("/usersDash/:id",(req,res)=>{

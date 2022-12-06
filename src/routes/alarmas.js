@@ -25,6 +25,7 @@ router.get("/alarmsData",(req,res)=>{
 //read an alarm data 
 router.get("/alarmsData/:id",(req,res)=>{
     const {id}=req.params;
+    console.log(id)
     alarmSchema
     .findById(id)
     .then((data)=>res.json(data))
