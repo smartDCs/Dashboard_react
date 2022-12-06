@@ -32,8 +32,8 @@ router.get("/loginUser",function(req,res){
   console.log(password);
     userSchema
     .findOne({
-        email:email,
-        password:password
+        email:"david@domotizarq.com",
+        password:"dev1234"
     }, function(err,result){
         if (err) {
             res.send(err);
