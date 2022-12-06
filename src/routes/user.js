@@ -35,7 +35,11 @@ router.get("/loginUser",function(req,res){
         email:email,
         password:password
     })
-     .then((data)=>res.json(data))
+     .then((data)=>{
+        res.json(data);
+        res.send("user find");
+    }
+        )
      .catch((error)=>res.json({
          message:error
      }));
