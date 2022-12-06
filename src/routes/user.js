@@ -31,18 +31,25 @@ router.get("/loginUser",function(req,res){
   console.log(email);
   console.log(password);
     userSchema
-    .find({
+    .findOne({
         email:email,
         password:password
-    })
-     .then((data)=>{
+    }, function(err,result){
+        if (err) {
+            res.send(err);
+          } else {
+            res.send(result);
+          }  
+    });
+    /* .then((data)=>{
         res.json(data);
-        res.send("user find");
+        
     }
         )
      .catch((error)=>res.json({
          message:error
      }));
+     */
  });
  
 //update a user
