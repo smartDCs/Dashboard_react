@@ -20,7 +20,7 @@ router.post("/usersDash", (req, res) => {
     role: role,
     password: password,
   };
-  const user = userSchema(dataUser);
+  const user = userSchema(JSON.stringify(dataUser));
   user
     .save()
     .then((data) => res.json(data))
