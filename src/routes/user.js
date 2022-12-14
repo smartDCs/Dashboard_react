@@ -6,6 +6,7 @@ require("dotenv").config();
 router.use(cors());
 //create user
 router.post("/usersDash",(req,res)=>{
+    console.log(req.body);
     const user=userSchema(req.body);
     user
     .save()
