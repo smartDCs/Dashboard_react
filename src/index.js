@@ -180,10 +180,16 @@ async function websocket() {
 
 async function changeState(arg) {
 
+if(arg==3){
+  const status = await connection.toggleDevice(idPow, 1);
+  console.log("respuesta del toggle ", status);
 
+}else{
   const status = await connection.toggleDevice(idDual, arg);
   console.log("respuesta del toggle ", status);
 
+}
+  
 
 }
 
